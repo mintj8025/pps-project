@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View , Image } from 'react-native'
+import { StyleSheet, Text, View , Image , Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { TextInput , Button } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")  
 
@@ -21,7 +21,24 @@ const Login = () => {
     })
 
     const data = await response.json()
-    console.log(data)
+    if(data.status === 'ok') {
+      Alert.alert(
+        data.status,
+        data.message,
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
+      await AsyncStorage.setItem('@token', data.token)
+      const token = await AsyncStorage.getItem('@token')
+      navigation.navigate('Home')
+    }else {
+      Alert.alert(
+        data.status,
+        data.message,
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]);
+      }
   }
 
 

@@ -46,10 +46,10 @@ app.post('/login', jsonParser , function (req, res, next) {
       if(assessor.length == 0) {res.json({status: 'error', message: 'no user found'}); return }
       bcrypt.compare(req.body.assessor_password, assessor[0].assessor_password, function(err, isLogin) {
         if(isLogin){
-          var token = jwt.sign({ assessor_username: assessor[0].assessor_username }, secret, { expiresIn: '1h' });
+          var token = jwt.sign({assessor_username: assessor[0].assessor_username}, secret, { expiresIn: '1h' });
           res.json({status: 'ok', message: 'login success' , token})
         } else {
-          res.json({status: 'ok', message: 'login failed'})
+          res.json({status: 'error', message: 'login failed'})
         }
       });
     }
