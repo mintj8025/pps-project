@@ -8,15 +8,16 @@ const Home = () => {
 
     const fetchAssessor = async () =>{
         const token = await AsyncStorage.getItem('@token')
-        const response = fetch('http://10.0.2.2:5000/authen', {
-            method: 'GET',
+        const response = await fetch('http://10.0.2.2:5000/authen', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
               },
         })
         const data = await response.json()
-        console.log(data)
+        setAssessor(data.decoded)
+        setIsLoading(false)
     }
 
     useEffect(() =>{
@@ -25,7 +26,7 @@ const Home = () => {
 
   return (
     <View>
-      <Text>Home</Text>
+      <Text>{assessor.assessor_fname}</Text>
     </View>
   )
 }
